@@ -20,6 +20,7 @@ public class DrawView extends ImageView {
     private static final String TAG = DrawView.class.getSimpleName();
 
 	public DuchessSprite mDuchess;
+	public DragFeedbackSprite mDragFeedbackSprite;
 	
 	public enum Action {
 	    NONE, ONGOING, DRAG
@@ -30,6 +31,8 @@ public class DrawView extends ImageView {
 	public DrawView(Context context, DuchessSprite duchess) {
 		super(context);
 		mDuchess = duchess;
+		int radius = mDuchess.getActualWidth() / 4;
+		mDragFeedbackSprite = new DragFeedbackSprite(mDuchess.getCenterX(), mDuchess.getCenterY(), radius);
 		
         // make the Panel focusable so it can handle events
         setFocusable(true);
@@ -41,28 +44,11 @@ public class DrawView extends ImageView {
 	public void onDraw(Canvas canvas) {
 
 		mDuchess.draw(canvas);
-		
-		switch(mode) {
-		case DRAG :
-			drawDragFeedback(canvas);
-			break;
-		default :
-			break;
-		}
-		
+		if (mDragFeedbackSprite.isVisible()) mDragFeedbackSprite.draw(canvas);
+	}
+	
+	
 
-	}
-	
-	private void drawDragFeedback(Canvas canvas) {
-		Paint dragPaint = new Paint();
-		dragPaint = new Paint();
-		dragPaint.setColor(Color.GREEN);
-		dragPaint.setAlpha(128);
-		int radius = Math.round(mDuchess.getBitmap().getWidth() / mDuchess.getBitmapScale() / 4);
-		canvas.drawCircle(mDuchess.getX(), mDuchess.getY(), 
-				radius, dragPaint);
-	}
-	
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -81,8 +67,10 @@ public class DrawView extends ImageView {
     	    	if (mDuchess.isTouched()) {
     	    		mode = Action.DRAG;
     	    		// the duchess was picked up and is being dragged
-    	    		mDuchess.setX((int)event.getX());
-    	    		mDuchess.setY((int)event.getY());
+    	    		mDuchess.setCenterX((int)event.getX());
+    	    		mDuchess.setCenterY((int)event.getY());
+    	    		mDragFeedbackSprite.setVisible(true);
+    	    		mDragFeedbackSprite.setCenter(mDuchess);
     	    		invalidate();
     	    		Log.d(TAG,"move");
     	    	} 
@@ -94,9 +82,10 @@ public class DrawView extends ImageView {
     	    		invalidate();
     	    	}
     	    	mode = Action.NONE;
-    	    	// touch was released
+   	    	// touch was released
     	    	if (mDuchess.isTouched()) {
     	    		mDuchess.setTouched(false);
+    	    		mDragFeedbackSprite.setVisible(false);
     	    	}
     	    	break;
     	    }   
