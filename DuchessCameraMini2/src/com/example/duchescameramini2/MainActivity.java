@@ -26,6 +26,8 @@ public class MainActivity extends Activity {
 
 	private Camera mCamera;
 	
+	private DuchessSprite mDuchessSprite;
+	
     private SoundPool mSoundPool;
     private int mShutterSoundId;
     private float mShutterSoundVolume = 0.5f;
@@ -41,7 +43,6 @@ public class MainActivity extends Activity {
 
         mCamera = getCameraInstance();
 
-        
         CameraPreview cameraPreview = new CameraPreview(this, mCamera);
         FrameLayout previewFrame = (FrameLayout) findViewById(R.id.cameraPreviewFrame);
         previewFrame.addView(cameraPreview);
@@ -50,10 +51,10 @@ public class MainActivity extends Activity {
  		previewFrame.setLayoutParams(previewFrameLayoutParams);
 
 		// create duchess and load bitmap
-    	DuchessSprite duchess = new DuchessSprite(
+    	mDuchessSprite = new DuchessSprite(
     			BitmapFactory.decodeResource(getResources(), R.drawable.duchessfr_shadow), 
     			previewFrameLayoutParams.width * 1/3, previewFrameLayoutParams.height * 2/3); 
-        DrawView drawView = new DrawView(this, duchess);
+        DrawView drawView = new DrawView(this, mDuchessSprite);
         previewFrame.addView(drawView);
         
 	}
@@ -148,7 +149,7 @@ public class MainActivity extends Activity {
      
      public void whenSave(View view) {
          // get an image from the camera
-     		PictureWriter mJpegPictureCallback = new PictureWriter(this);
+     		PictureWriter mJpegPictureCallback = new PictureWriter(this, mDuchessSprite);
  			Camera.ShutterCallback shutterCallback = new Camera.ShutterCallback() {
  				public void onShutter() {
  					mSoundPool.play(mShutterSoundId, mShutterSoundVolume, mShutterSoundVolume, 1, 0, 1);

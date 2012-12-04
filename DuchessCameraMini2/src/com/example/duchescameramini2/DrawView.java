@@ -34,7 +34,7 @@ public class DrawView extends ImageView {
 	@Override
 	public void onDraw(Canvas canvas) {
 
-		mDuchess.draw(canvas);
+		mDuchess.draw(canvas, 1);
 		if (mDragFeedbackSprite.isVisible()) mDragFeedbackSprite.draw(canvas);
 	}
 	

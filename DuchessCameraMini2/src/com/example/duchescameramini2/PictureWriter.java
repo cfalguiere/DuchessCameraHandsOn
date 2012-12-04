@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,16 +18,19 @@ import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.net.Uri;
 import android.os.Environment;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.WindowManager;
 
 public class PictureWriter implements PictureCallback {
 	private static final String TAG = PictureWriter.class.getSimpleName();
 
 	private Activity mActivity;
+	private DuchessSprite mDuchessSprite;
 	
-	public PictureWriter(Activity activity) {
+	public PictureWriter(Activity activity, DuchessSprite sprite) {
 		mActivity = activity;
- 		
+		mDuchessSprite = sprite;
 	}
 	
 	@Override
@@ -43,10 +47,15 @@ public class PictureWriter implements PictureCallback {
 			// draw the original image to the canvas
 			canvas.drawBitmap(photo, 0, 0, null);	    	   
 
+			// draw duchess
+			float ratio = (float) photo.getHeight() / getScreenHeight();
+			mDuchessSprite.draw(canvas, ratio);
+
+			// save file
 			File pictureFile = getOutputMediaFile();
 			writeBitmapToFile(bitmap, pictureFile);
 			addPictureToGalery(pictureFile.getPath());
-			
+		
 			Log.d(TAG, "picture taken");
 		} catch (Exception e) {
 			Log.d(TAG, "ERROR Could not save picture: " + e.getMessage());
@@ -97,5 +106,10 @@ public class PictureWriter implements PictureCallback {
 		mActivity.sendBroadcast(mediaScanIntent);
 	}
 
-
+	private float getScreenHeight() {
+		DisplayMetrics metrics = new DisplayMetrics();
+		((WindowManager) mActivity.getSystemService(Context.WINDOW_SERVICE))
+		  .getDefaultDisplay().getMetrics(metrics);
+		return (float) metrics.heightPixels;
+	}
 }

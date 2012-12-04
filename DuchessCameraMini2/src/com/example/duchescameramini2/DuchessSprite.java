@@ -3,6 +3,7 @@ package com.example.duchescameramini2;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.util.Log;
 
 public class DuchessSprite extends AbstractSprite {
 	private static final String TAG = DuchessSprite.class.getSimpleName();
@@ -43,14 +44,16 @@ public class DuchessSprite extends AbstractSprite {
 		this.touched = touched;
 	}
 
-	public void draw(Canvas canvas) {
+	public void draw(Canvas canvas, float ratio) {
+		Log.d(TAG, "ratio " + ratio);
 		Matrix matrix = new Matrix();
 		float s = 1 / bitmapScale; 
 		int cw = Math.round(bitmap.getWidth() / 2);
 		int ch = Math.round(bitmap.getHeight()  / 2);
 		matrix.setScale(s, s, cw, ch);
 		matrix.postTranslate(centerX - cw, centerY - ch);
-		canvas.drawBitmap(bitmap, matrix, null /*new Paint()*/);		   
+		matrix.postScale(ratio, ratio);
+		canvas.drawBitmap(bitmap, matrix, null);		   
 	}
 
 	public void handleActionDown(int eventX, int eventY) {
