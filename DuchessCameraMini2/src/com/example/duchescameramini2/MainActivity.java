@@ -5,13 +5,16 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.Surface;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
@@ -29,11 +32,21 @@ public class MainActivity extends Activity {
 
         mCamera = getCameraInstance();
 
+        
         CameraPreview cameraPreview = new CameraPreview(this, mCamera);
         FrameLayout previewFrame = (FrameLayout) findViewById(R.id.cameraPreviewFrame);
-         previewFrame.addView(cameraPreview);
-         resizePreviewFrame(previewFrame);
+        previewFrame.addView(cameraPreview);
+ 
+        ViewGroup.LayoutParams previewFrameLayoutParams = computePreviewFrameLayout(previewFrame);
+ 		previewFrame.setLayoutParams(previewFrameLayoutParams);
 
+		// create duchess and load bitmap
+    	DuchessSprite duchess = new DuchessSprite(
+    			BitmapFactory.decodeResource(getResources(), R.drawable.duchessfr_shadow), 
+    			previewFrameLayoutParams.width * 1/3, previewFrameLayoutParams.height * 2/3); 
+        DrawView drawView = new DrawView(this, duchess);
+        previewFrame.addView(drawView);
+        
 	}
 
 	@Override
@@ -84,11 +97,9 @@ public class MainActivity extends Activity {
         }
     }
     
-     private void resizePreviewFrame(FrameLayout previewFrame) {
+     private ViewGroup.LayoutParams computePreviewFrameLayout(FrameLayout previewFrame) {
          
         Display display = ((WindowManager)getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-
-
  		DisplayMetrics metrics = new DisplayMetrics();
  		display.getMetrics(metrics);
  		int screenHeightPixels = metrics.heightPixels;
@@ -121,8 +132,11 @@ public class MainActivity extends Activity {
 	     		params.height = screenHeightPixels;        	
 				break;
  			default:	
+ 				break;
  		}
-
- 		previewFrame.setLayoutParams(params);
+ 		return params;
     }
+     
+
+
 }
