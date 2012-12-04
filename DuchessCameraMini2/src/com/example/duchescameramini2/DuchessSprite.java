@@ -3,7 +3,6 @@ package com.example.duchescameramini2;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.util.Log;
 
 public class DuchessSprite extends AbstractSprite {
 	private static final String TAG = DuchessSprite.class.getSimpleName();

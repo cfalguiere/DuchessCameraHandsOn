@@ -1,11 +1,8 @@
 package com.example.duchescameramini2;
 
 
-import java.util.List;
-
 import android.content.Context;
 import android.hardware.Camera;
-import android.hardware.Camera.Size;
 import android.util.Log;
 import android.view.Display;
 import android.view.Surface;

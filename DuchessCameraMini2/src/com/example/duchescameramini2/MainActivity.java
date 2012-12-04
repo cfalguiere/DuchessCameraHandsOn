@@ -4,16 +4,14 @@ package com.example.duchescameramini2;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
-import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.Size;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.Surface;
@@ -28,11 +26,18 @@ public class MainActivity extends Activity {
 
 	private Camera mCamera;
 	
+    private SoundPool mSoundPool;
+    private int mShutterSoundId;
+    private float mShutterSoundVolume = 0.5f;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+    	setupSounds();
+    	
     	requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_main);
+    	setContentView(R.layout.activity_main);
 
         mCamera = getCameraInstance();
 
@@ -144,16 +149,17 @@ public class MainActivity extends Activity {
      public void whenSave(View view) {
          // get an image from the camera
      		PictureWriter mJpegPictureCallback = new PictureWriter(this);
-  			/*
  			Camera.ShutterCallback shutterCallback = new Camera.ShutterCallback() {
- 				
  				public void onShutter() {
- 					// TODO Auto-generated method stub
- 					//mSoundPool.play(mShutterSound, 1f, 1f, 1, 0, 1);
-					Log.d(TAG, "shutter");
+ 					mSoundPool.play(mShutterSoundId, mShutterSoundVolume, mShutterSoundVolume, 1, 0, 1);
  				}
- 			};*/
- 			mCamera.takePicture(null, null, mJpegPictureCallback);
+ 			};
+ 			mCamera.takePicture(shutterCallback, null, mJpegPictureCallback);
     }
 
+     private void setupSounds() {
+     	mSoundPool = new SoundPool(1, AudioManager.STREAM_NOTIFICATION, 0);
+     	mShutterSoundId = mSoundPool.load(this, R.raw.camera_click, 1);
+   	 
+     }
 }

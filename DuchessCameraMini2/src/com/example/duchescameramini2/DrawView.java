@@ -2,17 +2,8 @@ package com.example.duchescameramini2;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Paint.Style;
-import android.graphics.Point;
-import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Display;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
-import android.view.WindowManager;
 import android.widget.ImageView;
 
 public class DrawView extends ImageView {
