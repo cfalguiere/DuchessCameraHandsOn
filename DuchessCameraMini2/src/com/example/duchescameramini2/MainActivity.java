@@ -1,17 +1,25 @@
 package com.example.duchescameramini2;
 
 
-import android.hardware.Camera;
-import android.os.Bundle;
+import java.util.List;
+
 import android.app.Activity;
+import android.content.Context;
+import android.hardware.Camera;
+import android.hardware.Camera.Size;
+import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.Menu;
+import android.view.Surface;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 public class MainActivity extends Activity {
 
 	private Camera mCamera;
-	private CameraPreview mCameraPreview;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -21,9 +29,10 @@ public class MainActivity extends Activity {
 
         mCamera = getCameraInstance();
 
-        mCameraPreview = new CameraPreview(this, mCamera);
+        CameraPreview cameraPreview = new CameraPreview(this, mCamera);
         FrameLayout previewFrame = (FrameLayout) findViewById(R.id.cameraPreviewFrame);
-        previewFrame.addView(mCameraPreview);
+         previewFrame.addView(cameraPreview);
+         resizePreviewFrame(previewFrame);
 
 	}
 
@@ -56,6 +65,11 @@ public class MainActivity extends Activity {
 	    Camera c = null;
 	    try {
 	        c = Camera.open(); // attempt to get a Camera instance
+	        // setup camera with smallest size
+			Camera.Parameters parameters = c.getParameters();
+			List<Size> size = parameters.getSupportedPreviewSizes();
+	        parameters.setPreviewSize(size.get(0).width, size.get(0).height);
+			c.setParameters(parameters);
 	    }
 	    catch (Exception e){
 	        // Camera is not available (in use or does not exist)
@@ -68,5 +82,47 @@ public class MainActivity extends Activity {
             mCamera.release();        // release the camera for other applications
             mCamera = null;
         }
+    }
+    
+     private void resizePreviewFrame(FrameLayout previewFrame) {
+         
+        Display display = ((WindowManager)getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+
+
+ 		DisplayMetrics metrics = new DisplayMetrics();
+ 		display.getMetrics(metrics);
+ 		int screenHeightPixels = metrics.heightPixels;
+ 		int screenWidthPixels = metrics.widthPixels;
+
+  		Camera.Parameters parameters = mCamera.getParameters();
+ 		Size photoSize = parameters.getPreviewSize();
+ 		int photoWidth = photoSize.width;
+ 		int photoHeight = photoSize.height;
+ 		float photoRatio = (float)photoHeight/photoWidth;
+
+ 		// Now change Frame dimensions to match the scaled image
+
+ 		ViewGroup.LayoutParams params = previewFrame.getLayoutParams();		
+ 		switch (display.getRotation()) {
+			case Surface.ROTATION_0: //portrait up
+	    		params.width = screenWidthPixels;
+	     		params.height = Math.round(screenHeightPixels * photoRatio);        	
+ 				break;
+ 			case Surface.ROTATION_90:
+	    		params.width = Math.round(screenWidthPixels * photoRatio); ;
+	     		params.height = screenHeightPixels;        	
+				break;
+ 			case Surface.ROTATION_180:
+	    		params.width = screenWidthPixels;
+	     		params.height = Math.round(screenHeightPixels * photoRatio);        	
+				break;
+ 			case Surface.ROTATION_270:
+	    		params.width = Math.round(screenWidthPixels * photoRatio); ;
+	     		params.height = screenHeightPixels;        	
+				break;
+ 			default:	
+ 		}
+
+ 		previewFrame.setLayoutParams(params);
     }
 }

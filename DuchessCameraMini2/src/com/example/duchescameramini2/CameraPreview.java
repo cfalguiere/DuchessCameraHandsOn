@@ -59,10 +59,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         // reformatting changes here
         
 		Camera.Parameters parameters = mCamera.getParameters();
-        fixRotation(parameters);
-        
-		List<Size> size = parameters.getSupportedPreviewSizes();
-        parameters.setPreviewSize(size.get(0).width, size.get(0).height);
+        fixRotation(parameters);       
 		mCamera.setParameters(parameters);
 
         startPreview();
@@ -99,29 +96,29 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
  	private void fixRotation(Camera.Parameters parameters) {
         Display display = ((WindowManager)getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 
-		List<Size> size = parameters.getSupportedPreviewSizes();
-        int w = size.get(0).width;
-        int h = size.get(0).height;
+		//List<Size> size = parameters.getSupportedPreviewSizes();
+        //int w = size.get(0).width;
+        //int h = size.get(0).height;
 
         if(display.getRotation() == Surface.ROTATION_0)
         {
-            parameters.setPreviewSize(h, w);                           
+            //parameters.setPreviewSize(h, w);                           
             mCamera.setDisplayOrientation(90);
         }
 
         if(display.getRotation() == Surface.ROTATION_90)
         {
-            parameters.setPreviewSize(w, h);                           
+            //parameters.setPreviewSize(w, h);                           
         }
 
         if(display.getRotation() == Surface.ROTATION_180)
         {
-            parameters.setPreviewSize(h, w);               
+            //parameters.setPreviewSize(h, w);               
         }
 
         if(display.getRotation() == Surface.ROTATION_270)
         {
-            parameters.setPreviewSize(w, h);
+            //parameters.setPreviewSize(w, h);
             mCamera.setDisplayOrientation(180);
         } 
  		
