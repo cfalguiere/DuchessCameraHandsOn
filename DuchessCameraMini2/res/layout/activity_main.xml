@@ -13,4 +13,13 @@
 
     </FrameLayout>
 
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/camera_icon" 
+        android:onClick="whenSave" />
+
 </RelativeLayout>

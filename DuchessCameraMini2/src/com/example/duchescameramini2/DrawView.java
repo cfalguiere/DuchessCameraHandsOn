@@ -58,7 +58,7 @@ public class DrawView extends ImageView {
     	switch (action & MotionEvent.ACTION_MASK) {
     		case MotionEvent.ACTION_DOWN: {
                 // delegating event handling to the duchess
-                mDuchess.handleActionDown((int)event.getX(), (int)event.getY());
+                mDuchess.handleActionDown((int)event.getX(), (int)event.getY()); // revoir pour deporter juste la detection du touch
             	mode = Action.ONGOING;
             	Log.d(TAG,"down");
             	break;

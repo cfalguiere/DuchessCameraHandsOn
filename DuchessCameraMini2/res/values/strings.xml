@@ -5,4 +5,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
 
+    <string name="dialog_saved_title">Duchess Camera</string>
+    <string name="dialog_saved_message">Image saved</string>
+    <string name="button_text_ok">OK</string>
+    
 </resources>

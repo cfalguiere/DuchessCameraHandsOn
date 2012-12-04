@@ -4,9 +4,12 @@ package com.example.duchescameramini2;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
+import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -21,6 +24,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 public class MainActivity extends Activity {
+	private static final String TAG = MainActivity.class.getSimpleName();
 
 	private Camera mCamera;
 	
@@ -137,6 +141,19 @@ public class MainActivity extends Activity {
  		return params;
     }
      
-
+     public void whenSave(View view) {
+         // get an image from the camera
+     		PictureWriter mJpegPictureCallback = new PictureWriter(this);
+  			/*
+ 			Camera.ShutterCallback shutterCallback = new Camera.ShutterCallback() {
+ 				
+ 				public void onShutter() {
+ 					// TODO Auto-generated method stub
+ 					//mSoundPool.play(mShutterSound, 1f, 1f, 1, 0, 1);
+					Log.d(TAG, "shutter");
+ 				}
+ 			};*/
+ 			mCamera.takePicture(null, null, mJpegPictureCallback);
+    }
 
 }
