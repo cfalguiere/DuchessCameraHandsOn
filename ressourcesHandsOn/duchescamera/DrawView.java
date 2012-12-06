@@ -22,8 +22,6 @@ public class DrawView extends ImageView {
 	public DrawView(Context context, DuchessSprite duchess) {
 		super(context);
 		mDuchess = duchess;
-		int radius = mDuchess.getActualWidth() / 4;
-		mDragFeedbackSprite = new DragFeedbackSprite(mDuchess.getCenterX(), mDuchess.getCenterY(), radius);
 
 		// A vous de coder
 	}

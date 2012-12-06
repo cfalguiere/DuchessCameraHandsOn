@@ -124,13 +124,6 @@ public class MainActivity extends Activity {
     }
      
      public void whenSave(View view) {
-         // get an image from the camera
-     		PictureWriter mJpegPictureCallback = new PictureWriter(this, mDuchessSprite);
- 			Camera.ShutterCallback shutterCallback = new Camera.ShutterCallback() {
- 				public void onShutter() {
- 					mSoundPool.play(mShutterSoundId, mShutterSoundVolume, mShutterSoundVolume, 1, 0, 1);
- 				}
- 			};
- 			mCamera.takePicture(shutterCallback, null, mJpegPictureCallback);
+         // A vous de coder
     }
 }

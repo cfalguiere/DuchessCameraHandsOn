@@ -161,6 +161,5 @@ public class MainActivity extends Activity {
      private void setupSounds() {
      	mSoundPool = new SoundPool(1, AudioManager.STREAM_NOTIFICATION, 0);
      	mShutterSoundId = mSoundPool.load(this, R.raw.camera_click, 1);
-   	 
      }
 }
