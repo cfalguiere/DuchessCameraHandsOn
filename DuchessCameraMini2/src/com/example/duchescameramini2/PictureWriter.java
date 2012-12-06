@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.net.Uri;
@@ -44,7 +45,6 @@ public class PictureWriter implements PictureCallback {
 
 			final Canvas canvas = new Canvas(bitmap);
 
-			// draw the original image to the canvas
 			canvas.drawBitmap(photo, 0, 0, null);	    	   
 
 			// draw duchess
